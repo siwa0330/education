@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}个人信息{% endblock %}
+
+{% block ptitle %}个人信息{% endblock %}
+
+{% block pbody %}
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <p><b>用户名：</b>{{ obj.username }}</p>
+                <p><b>姓名：</b>{{ obj.realname }}</p>
+                <p><b>学号/工号：</b>{{ obj.workid }}</p>
+                {% if obj.collegetype == 'economic' %}
+                    <p><b>所属学院：</b>经济学院</p>
+                {% else %}
+                    <p><b>所属学院：</b>计算机学院</p>
+                {% endif %}
+
+                {% if obj.desc %}
+                    <p><b>个人简介：</b>{{ obj.desc }}</p>
+                {% else %}
+                    <p><b>个人简介：</b>&nbsp暂无</p>
+                {% endif %}
+                <a href="/edit_info/"><input type='button' onclick="window.location.href('/edit_info/')" value="编辑"  class="btn btn-primary"></a>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}

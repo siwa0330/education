@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}信息提示{% endblock %}
+
+{% block ptitle %}信息提示{% endblock %}
+
+{% block pbody %}
+    <div class="row">
+        <div class="col-md-12">
+
+
+                <p><h4><b>提示：</b></h4>课程已被添加，无法重复添加。</p>
+                <p><a href="/add_lesson/"><input type='button' onclick="window.location.href('/add_lesson/')" value="重新选择课程"  class="btn btn-primary"></a>
+                </p>
+
+        </div>
+    </div>
+{% endblock %}

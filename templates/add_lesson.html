@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}个人主页{% endblock %}
+
+{% block ptitle %}我的课程{% endblock %}
+
+{% block pbody %}
+    <div class="row">
+        <div class="col-md-12">
+            <p><h4><b>全部可选课程：</b></h4></p>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead class="text-center">
+                    <tr>
+                        <th>序号</th>
+                        <th>课程名</th>
+                        <th>课程简介</th>
+                        <th>所属学院</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    {% for index,lesson_obj in lesson_list %}
+                    <tr>
+                        <th>{{ index }}</th>
+                        <th>{{ lesson_obj.title }}</th>
+                        <th>{{ lesson_obj.desc }}</th>
+                        {% if lesson_obj.collegetype == 'economic' %}
+                            <th>经济学院</th>
+                        {% else %}
+                            <th>计算机学院</th>
+                        {% endif %}
+                        <th class="text-center"> <a href="/choice_lesson/?title={{ lesson_obj.title }}&desc={{ lesson_obj.desc }}">添加</a></th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

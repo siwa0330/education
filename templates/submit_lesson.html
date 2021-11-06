@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}个人信息{% endblock %}
+
+{% block ptitle %}个人信息{% endblock %}
+
+{% block pbody %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">
+                {% csrf_token %}
+                <p><h3><b>温馨提示：</b></h3>课程一经发布，无法进行后续修改，详情请参考《教师课程发布细则》，谢谢合作。</p>
+                <p><b>任课教师：</b><input type="text" name="realname" value="{{ obj.realname }}" disabled></p>
+                <p><b>课程所属学院：</b>
+                    {% if obj.collegetype == 'economic' %}
+                        <input type="text" name="collegetype" value="经济学院" disabled></p>
+                    {% else %}
+                        <input type="text" name="collegetype" value="计算机学院" disabled></p>
+                    {% endif %}
+                <p><b>课程标题：</b><input type="text" name="title"></p>
+
+                <p><b>课程简介：</b><textarea name="desc" id="" cols="30" rows="10"></textarea></p>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default btn-primary">提交</button>
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <a href="/index/"><input type='button' onclick="window.location.href('/index/')" value="取消发布"  class="btn btn-default"></a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,2 @@
+# education_djangoproject
+用Django框架搭建的学校选课系统

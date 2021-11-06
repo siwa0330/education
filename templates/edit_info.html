@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}个人信息{% endblock %}
+
+{% block ptitle %}个人信息{% endblock %}
+
+{% block pbody %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">
+               {% csrf_token %}
+                <p><b>用户名：</b><input type="text" name="username" value="{{ obj.username }}" disabled></p>
+                <p><b>姓名：</b><input type="text" name="realname" value="{{ obj.realname }}" ></p>
+                <p><b>学号/工号：</b><input type="text" name="workid" value="{{ obj.workid }}"></p>
+
+                <p><b>所属学院：</b><select name="collegetype" >
+                    {% if obj.collegetype == 'economic' %}
+                        <option value="economic" selected>经济</option>
+                        <option value="computer" >计算机</option>
+                    {% else %}
+                        <option value="economic" >经济</option>
+                        <option value="computer" selected>计算机</option>
+                    {% endif %}
+                </select></p>
+                {% if obj.desc %}
+                    <p><b>个人简介：</b><textarea name="desc" id="" cols="30" rows="10">{{ obj.desc }}</textarea></p>
+                {% else %}
+                    <p><b>个人简介：</b><textarea name="desc" id="" cols="30" rows="10"></textarea></p>
+
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default btn-primary">提交</button>
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <a href="/info/"><input type='button' onclick="window.location.href('/info/')" value="取消编辑"  class="btn btn-default"></a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
