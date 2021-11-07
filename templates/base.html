@@ -33,12 +33,12 @@
                     <li><a href="#"><b>{{ request.session.username }}</b></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/index/">我的课程</a></li>
-                            <li><a href="/info/">个人信息</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/logout/">注销</a></li>
-                        </ul>
+                            <ul class="dropdown-menu">
+                                <li><a href="/index/">我的课程</a></li>
+                                <li><a href="/info/">个人信息</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout/">注销</a></li>
+                            </ul>
                     </li>
                 {% else %}
                     <li><a class="" href="/login/">登录</a></li>
@@ -61,8 +61,8 @@
                     </a>
                     <a href="/index/" class="list-group-item">我的课程</a>
                     <a href="/info/" class="list-group-item">个人信息</a>
-                    <a href="#" class="list-group-item">关于</a>
                     <a href="#" class="list-group-item">更多</a>
+                    <a href="/logout" class="list-group-item">注销</a>
                 </div>
             </div>
             <!--网站左侧导航栏结束-->
@@ -91,15 +91,15 @@
                                         <div class="col-md-2">
                                             <label >您是</label>
                                             <select name="usertype" id="">
-                                                <option value="student" selected>学生</option>
-                                                <option value="teacher">老师</option>
+                                                <option value="2" selected>学生</option>
+                                                <option value="1">老师</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
                                             <label >所属学院</label>
                                             <select name="collegetype" id="">
-                                                <option value="economic" selected>经济</option>
-                                                <option value="computer">计算机</option>
+                                                <option value="1" selected>经济</option>
+                                                <option value="2">计算机</option>
                                             </select>
 
                                         </div>

@@ -3,6 +3,11 @@
 {% block title %}个人主页{% endblock %}
 
 {% block ptitle %}我的课程{% endblock %}
+<style>
+    .hide{
+        display: none;
+    }
+</style>
 
 {% block pbody %}
     <div class="row">
@@ -11,32 +16,67 @@
         </div>
         <div class="col-md-12">
             <table class="table table-striped">
+            {% csrf_token %}
                 <thead class="text-center">
                     <tr>
                         <th>序号</th>
                         <th>课程名</th>
                         <th>课程简介</th>
+                        <th>任课教师</th>
                         <th>所属学院</th>
                         <th class="text-center">操作</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    {% for index,lesson_obj in lesson_list %}
+                    {% for index,info in info_list %}
                     <tr>
                         <th>{{ index }}</th>
-                        <th>{{ lesson_obj.title }}</th>
-                        <th>{{ lesson_obj.desc }}</th>
-                        {% if lesson_obj.collegetype == 'economic' %}
+                        <th>{{ info.0 }}</th>
+                        <th>{{ info.1 }}</th>
+                        <th>{{ info.2 }}</th>
+                        {% if info.3 == '1' %}
                             <th>经济学院</th>
                         {% else %}
                             <th>计算机学院</th>
                         {% endif %}
-                        <th class="text-center"> <a href="/choice_lesson/?title={{ lesson_obj.title }}&desc={{ lesson_obj.desc }}">添加</a></th>
+                        <th class="text-center" id="tianjia"> <a onclick="add_function(this);">添加</a></th>
+                        <th id="yitianjia" class="hide text-center"><span>已添加</span></th>
                     </tr>
                     {% endfor %}
+                    <script>
+                        function add_function(ths){
+                            var row = $(ths).parent().prevAll();
+                            var collegetype = $(row[0]).text();
+                            var realname = $(row[1]).text();
+                            var desc = $(row[2]).text();
+                            var title = $(row[3]).text();
+
+                            //console.log(content); 能打印学院类型（经济学院）
+                            $.ajax({
+                                url: '/choice_lesson/',
+                                type: 'POST',
+                                data: {'csrfmiddlewaretoken': $("[name='csrfmiddlewaretoken']").val(),
+                                        'collegetype': collegetype,
+                                        'realname': realname,
+                                        'desc': desc,
+                                        'title': title},
+                                success: function (arg){
+                                    arg = JSON.parse(arg)
+                                    //console.log(arg.status)
+                                    if (arg.status){
+                                        $(ths).parent().addClass('hide')
+                                        $(ths).parent().next().removeClass('hide')
+                                    }
+                                }
+
+                        })}
+                    </script>
                 </tbody>
             </table>
 
+        </div>
+        <div class="col-md-4">
+            <a href="/index/"><input type='button' onclick="window.location.href('/index/')" value="返回"  class="btn btn-primary"></a>
         </div>
     </div>
 {% endblock %}

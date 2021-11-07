@@ -11,4 +11,6 @@ urlpatterns = [
     path('submit_lesson/', views.submit_lesson.as_view()),
     path('add_lesson/', views.add_lesson.as_view()),
     path('choice_lesson/', views.choice_lesson.as_view()),
+    path('del_lesson/', views.del_lesson.as_view()),
+    #path(r'^$', views.my_login.as_view()),
 ]

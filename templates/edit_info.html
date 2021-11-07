@@ -13,15 +13,13 @@
                 <p><b>姓名：</b><input type="text" name="realname" value="{{ obj.realname }}" ></p>
                 <p><b>学号/工号：</b><input type="text" name="workid" value="{{ obj.workid }}"></p>
 
-                <p><b>所属学院：</b><select name="collegetype" >
-                    {% if obj.collegetype == 'economic' %}
-                        <option value="economic" selected>经济</option>
-                        <option value="computer" >计算机</option>
+                <p><b>所属学院：</b>
+                    {% if obj.collegetype == '1' %}
+                        <input type="text" name="username" value="经济学院" disabled>
                     {% else %}
-                        <option value="economic" >经济</option>
-                        <option value="computer" selected>计算机</option>
+                        <input type="text" name="username" value="计算机学院" disabled>
                     {% endif %}
-                </select></p>
+                </p>
                 {% if obj.desc %}
                     <p><b>个人简介：</b><textarea name="desc" id="" cols="30" rows="10">{{ obj.desc }}</textarea></p>
                 {% else %}

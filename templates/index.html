@@ -7,7 +7,7 @@
 {% block pbody %}
     <div class="row">
         <div class="col-md-12">
-            {% if obj.usertype == 'student' %}
+            {% if obj.usertype == '2' %}
                 <a href="/add_lesson/"><input type='button' onclick="window.location.href('/add_lesson/')" value="添加新课程"  class="btn btn-primary"></a>
             {% else %}
                 <a href="/submit_lesson/"><input type='button' onclick="window.location.href('/submit_lesson/')" value="发布新课程"  class="btn btn-primary"></a>
@@ -25,13 +25,13 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    {% for index,lesson_obj in lesson_list %}
+                    {% for index,list in lesson_list %}
                     <tr>
                         <th>{{ index }}</th>
-                        <th>{{ lesson_obj.title }}</th>
-                        <th>{{ lesson_obj.desc }}</th>
-                        <th>{{ obj.realname }}</th>
-                        <th class="text-center"><a href="">详情</a> | <a href="">删除</a></th>
+                        <th>{{ list.0 }}</th>
+                        <th>{{ list.1 }}</th>
+                        <th>{{ list.2 }}</th>
+                        <th class="text-center"><a href="">详情</a> | <a href="/del_lesson/?nid={{ list.3 }}">删除</a></th>
                     </tr>
                     {% endfor %}
                 </tbody>

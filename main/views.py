@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.views import View
 from . import models
 from education import urls
@@ -49,13 +49,13 @@ class register(View):
                                    password=password,
                                    workid=workid
                                    )
-        back_userinfo = models.User.objects.get(username=username)
-        return render(request, 'login.html', {'back_userinfo': back_userinfo})
+        #back_userinfo = models.User.objects.get(username=username)
+        return redirect('/login')
 
 class my_login(View):
     def get(self, request):
         if request.session.get('id'):
-            return render(request, 'index.html')
+            return redirect('/index')
         else:
             return render(request, 'login.html')
     def post(self, request):
@@ -76,7 +76,7 @@ class my_login(View):
                 request.session['username'] = obj.username
 
                 #print(obj.usertype)
-                return render(request, 'index.html', {'obj': obj})
+                return redirect('/index')
             else:
                 error_msg = '用户名或密码不正确'
                 return render(request, 'login.html', {'error_msg': error_msg})
@@ -115,16 +115,21 @@ class index(View):
 
             #查询用户发布（添加）过的所有课程详细信息（返回object对象：[(obj),(obj),...]）
             lesson_list = []
+
             for index in range(len(lesson_id)):
                 temp_obj = models.lesson.objects.get(id=lesson_id[index]['lid_id'])
                 #print(temp_obj)    lesson object (1) lesson object (2)
-                lesson_list.append(temp_obj)
+                #根据查询出来的每一条课程对象，利用里面记录的teacher_id,反查教师姓名
+                teacher_obj = models.User.objects.filter(id=temp_obj.teacher_id).get()
+                temp_list = [temp_obj.title, temp_obj.desc, teacher_obj.realname, temp_obj.id]
+
+                lesson_list.append(temp_list)
             #print(lesson_list)    [<lesson: lesson object (1)>, <lesson: lesson object (2)>]
             #将lesson_list包装成[(1, obj), (2, obj),...]
             lesson_list = list(enumerate(lesson_list, 1))
 
 
-            return render(request, 'index.html', {'obj': obj, 'lesson_list': lesson_list})
+            return render(request, 'index.html', {'lesson_list': lesson_list, 'obj': obj})
         else:
             return render(request, 'login.html')
 
@@ -170,7 +175,7 @@ class submit_lesson(View):
         title = request.POST.get('title')
         desc = request.POST.get('desc')
         #print(id, obj.realname, obj.collegetype, title, desc)
-        red = models.lesson.objects.update_or_create(title=title, desc=desc, collegetype=obj.collegetype)
+        red = models.lesson.objects.update_or_create(title=title, desc=desc, collegetype=obj.collegetype, teacher_id=id)
         #print(red)
         models.user2lesson.objects.update_or_create(uit_id=id, lid_id=red[0].id)
         return redirect('/index/')
@@ -179,13 +184,26 @@ class add_lesson(View):
 
     def get(self, request):
         if request.session.get('id'):
+            #获取个人信息
             id = request.session.get('id')
             obj = models.User.objects.filter(id=id).get()
-            lesson_list = models.lesson.objects.all()
-            lesson_list = list(enumerate(lesson_list, 1))
+            #获取个人已经添加过的课程信息
+            u2l_objs = models.user2lesson.objects.filter(uit_id=id).all()
+            lesson_id_list = []
+            for u2l_obj in u2l_objs:
+                lesson_id_list.append(u2l_obj.lid_id)
+
+            #获取所有课程
+            lesson_list = models.lesson.objects.exclude(id__in=lesson_id_list).all()
+            info_list = []
+            for lesson_obj in lesson_list:
+                teacher_obj = models.User.objects.filter(id=lesson_obj.teacher_id).get()
+                temp_list = [lesson_obj.title, lesson_obj.desc, teacher_obj.realname, lesson_obj.collegetype]
+                info_list.append(temp_list)
+            info_list = list(enumerate(info_list, 1))
 
 
-            return render(request, 'add_lesson.html', {'obj': obj, 'lesson_list': lesson_list})
+            return render(request, 'add_lesson.html', {'obj': obj, 'info_list': info_list})
         else:
             return render(request, 'login.html')
 
@@ -211,6 +229,33 @@ class choice_lesson(View):
         except:
             red = models.user2lesson.objects.update_or_create(uit_id=id, lid_id=obj.id)
             return redirect('/index/')
+
+    def post(self, request):
+        ret = {'status': True, 'message': None}
+        try:
+            id = request.session.get('id')
+            collegetype = request.POST.get('collegetype')
+            realname = request.POST.get('realname')
+            #print(realname)
+            desc = request.POST.get('desc')
+            title = request.POST.get('title')
+            lesson_obj = models.lesson.objects.filter(title=title, desc=desc).get()
+            models.user2lesson.objects.update_or_create(lid_id=lesson_obj.id, uit_id=id)
+        except Exception as e:
+            ret['status'] = False
+            ret['message'] = '异常'
+        import json
+        return HttpResponse(json.dumps(ret))
+
+class del_lesson(View):
+    def get(self, request):
+        if request.session.get('id'):
+            id = request.session.get('id')
+            lesson_id = request.GET.get('nid')
+            models.user2lesson.objects.filter(uit_id=id, lid_id=lesson_id).delete()
+            return redirect('/index')
+        else:
+            return redirect('/login')
 
 
 
