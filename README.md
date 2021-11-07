@@ -9,16 +9,16 @@
 页面部分功能展示如下：
 
 1.注册页面
-![img.png](img.png)
+![img.png](img/img.png)
 
 2.登录页面
-![img_1.png](img_1.png)
+![img_1.png](img/img_1.png)
 
 3.学生课程的添加和删除
-![img_2.png](img_2.png)
-![img_3.png](img_3.png)
+![img_2.png](img/img_2.png)
+![img_3.png](img/img_3.png)
 4.个人信息修改
-![img_4.png](img_4.png)
+![img_4.png](img/img_4.png)
 
 5.教师课程发布
-![img_5.png](img_5.png)
+![img_5.png](img/img_5.png)
